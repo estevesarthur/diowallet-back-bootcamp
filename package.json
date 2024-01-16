@@ -1,0 +1,22 @@
+{
+  "name": "diowallet-bootcamp",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MERN: Criando os Pilares de uma Carteira Digital com Node.js, Express e MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mysql2": "^3.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
