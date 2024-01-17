@@ -1,8 +1,10 @@
-import { createPool } from 'mysql2/promise';
+import mysql2 from 'mysql2/promise';
 import dotenv from 'dotenv';
 
+dotenv.config();
+
 //Com falha de segurança
-const pool = createPool({
+const pool = mysql2.createPool({
     host: '127.0.0.1',
     port: 3306,
     user: 'root',
@@ -19,22 +21,22 @@ const pool = createPool({
     database: process.env.DB_DATABASE,
 }); */
 
-pool.getConnection((err, pool) => {
-    if (err) {
-        console.log('Erro ao conectar ao banco de dados...', err);
-        return;
-    }
+// Obter uma conexão do pool usando Promise
+pool
+  .getConnection()
+  .then((connection) => {
     console.log('Conexão estabelecida!');
 
     // Execute consultas ou outras operações aqui...
-    // Se você quiser fechar a conexão após realizar suas operações, você pode descomentar a linha abaixo:
-    // con.end((err) => {
-    //     if (err) {
-    //         console.log('Erro ao encerrar a conexão...', err);
-    //         return;
-    //     }
-    //     console.log('A conexão foi encerrada...');
-    // });
-});
 
-export default { pool };
+    // Ao finalizar suas operações, libere a conexão de volta ao pool
+    connection.release();
+
+    // Se você deseja encerrar o pool de conexões (opcional)
+    // pool.end();
+  })
+  .catch((err) => {
+    console.log('Erro ao conectar ao banco de dados...', err);
+  });
+
+  export default pool;
