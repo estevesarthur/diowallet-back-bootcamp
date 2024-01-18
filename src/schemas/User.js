@@ -3,7 +3,7 @@ import pool from "../config/database.js";
 const createSchemaQuery = `
     CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
+        userName VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -12,7 +12,7 @@ const createSchemaQuery = `
 `;
 
 const insertUserQuery = `
-    INSERT INTO users (name, email, password) VALUES (?, ?, ?)
+    INSERT INTO users (userName, email, password) VALUES (?, ?, ?)
 `;
 
 const selectUserByEmailQuery = `
@@ -21,14 +21,16 @@ const selectUserByEmailQuery = `
 
 const createSchema = async (userData) => {
     const connection = await pool.getConnection();
-
     try {
+        //com falha, userName do database não deve aparecer
+        await connection.query('USE dioWallet_DB');
+
         // Criação da tabela
         await connection.query(createSchemaQuery);
         console.log('Tabela criada com sucesso!');
 
         // Exemplo de inserção de um usuário
-        await connection.query(insertUserQuery, [userData.name, userData.email, userData.password]);
+        await connection.query(insertUserQuery, [userData.userName, userData.email, userData.password]);
         console.log('Usuário inserido com sucesso!');
 
         // Exemplo de seleção de um usuário pelo email

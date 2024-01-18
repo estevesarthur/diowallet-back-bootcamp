@@ -6,21 +6,26 @@ async function signup(req, res) {
     try {
         const resService = await authService.signup(body);
 
-        res.status(200).json(resService);
+        return res.status(201).json(resService);
     } catch (error) {
         console.error('Erro ao criar usuário no controller:', error);
 
-        res.status(500).json({ error: 'Erro ao criar usuário' });
+        return res.status(409).json({ error: 'Erro ao criar usuário' });
     }
-
-    const resService = await authService.signup(body);
-
-    res.send(resService);
 }
 
+async function signin(req, res) {
+    const body = req.body;
 
+    try {
+        const token = await authService.signin(body);
 
+        return res.status(201).json(token);
+    } catch (error) {
+        console.error('Erro ao criar usuário no controller:', error);
+        
+        return res.status(401).json(error.message);
+    }
+}
 
-    
-
-export default { signup };
+export default { signup, signin};

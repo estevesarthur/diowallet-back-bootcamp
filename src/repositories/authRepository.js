@@ -1,16 +1,27 @@
 import pool from "../config/database.js";
 import createSchema from "../schemas/User.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 
 createSchema();
 
-async function create(data) {
+async function create(userData) {
     try {
+        const userExists = await findByEmail(userData.email);
+        if (userExists) {
+            console.log('E-mail de usuário já existe!');
+            // Pode lançar um erro aqui ou tratar de outra forma
+            return; // { message: 'E-mail de usuário já existe!' };
+        }
+
         // Lógica de criação de usuário movida para o repositório
-        const hashPassword = data.password; // Se a senha já estiver criptografada no serviço, use-a diretamente
+        const hashPassword = bcrypt.hashSync(userData.password, 10);
         await createSchema({
-            name: data.name,
-            email: data.email,
-            password: data.password, //hashPassword,
+            userName: userData.userName,
+            email: userData.email,
+            //com falha de segurança, substituir userData.password, por hashPassword,
+            password: userData.password, //hashPassword,
         });
         console.log('Dados inseridos com sucesso!');
     } catch (error) {
@@ -25,7 +36,8 @@ async function findByEmail(email) {
     try {
         const [rows] = await connection.execute('SELECT * FROM users WHERE email = ?', [email]);
 
-        return rows[0]; // Retorna o primeiro resultado (se existir)
+        // Retorna o primeiro resultado se existir
+        return rows.length > 0 ? rows[0] : null;
     } catch (error) {
         console.error('Erro ao buscar usuário por e-mail:', error);
         throw error; // Rejoga o erro para tratamento posterior
@@ -34,4 +46,9 @@ async function findByEmail(email) {
     }
 }
 
-export default { create, findByEmail };
+async function generateToken(id){
+    return jwt.sign({ id }, process.env.SECRET, { expiresIn: 86400 });
+}
+
+
+export default { create, findByEmail, generateToken, };
