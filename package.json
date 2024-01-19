@@ -5,15 +5,17 @@
   "description": "MERN: Criando os Pilares de uma Carteira Digital com Node.js, Express e MongoDB",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "estevesarthur",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "joi": "^17.12.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.7.0"
   },

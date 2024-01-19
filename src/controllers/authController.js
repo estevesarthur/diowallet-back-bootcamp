@@ -21,11 +21,21 @@ async function signin(req, res) {
         const token = await authService.signin(body);
 
         return res.status(201).send(token);
-    } catch (error) {
-        console.error('Erro ao criar usuário no controller:', error);
-        
+    } catch (error) {        
         return res.status(401).send(error.message);
     }
 }
 
-export default { signup, signin};
+async function userLogged(req, res) {
+    const id = res.locals.user;
+
+    try {
+        const user = await authService.userLogged(id);
+        return res.send(user);
+
+    } catch (error) {
+        return res.status(404).send(error.message);
+    }
+}
+
+export default { signup, signin, userLogged};
