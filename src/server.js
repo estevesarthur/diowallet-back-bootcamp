@@ -1,7 +1,7 @@
 import express, { json } from "express";
 import authRouter from "./routers/authRoutes.js";
 import pool from "./config/database.js";
-import createSchema from "./schemas/User.js";
+import transactionRouter from "./routers/transactionRoutes.js";
 
 const app = express();
 
@@ -21,11 +21,12 @@ const obterConexao = async () => {
       console.error('Erro ao conectar ao banco de dados:', err);
     }
 };
-  
+
 // Chame a função para obter a conexão
 obterConexao();
 
 app.use(authRouter);
+app.use(transactionRouter);
 
 //com falha
 app.listen(5000, ()=> console.log("Server listening in port 5000"));

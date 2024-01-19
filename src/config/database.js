@@ -3,8 +3,9 @@ import dotenv from 'dotenv';
 import "dotenv/config";
 
 // Configurações de conexão sem banco de dados
+//com falha
 const connectionConfigWithoutDB = {
-    host: '127.0.0.1',
+    host: process.env.DB_HOST,
     port: 3306,
     user: 'root',
     password: 'aluno123',

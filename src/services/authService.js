@@ -22,7 +22,7 @@ async function signin(body) {
     //const passwordOK = bcrypt.compareSync(body.password, userExists.password);
     if(!passwordOK) throw new Error("E-mail e/ou senha incorretos.");
 
-    return authRepository.generateToken(userExists._id);
+    return authRepository.generateToken(userExists.id);
 }
 
 export default { 

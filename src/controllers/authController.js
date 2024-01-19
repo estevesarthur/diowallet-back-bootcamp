@@ -6,11 +6,11 @@ async function signup(req, res) {
     try {
         const resService = await authService.signup(body);
 
-        return res.status(201).json(resService);
+        return res.status(201).send(resService);
     } catch (error) {
         console.error('Erro ao criar usuário no controller:', error);
 
-        return res.status(409).json({ error: 'Erro ao criar usuário' });
+        return res.status(409).send({ error: 'Erro ao criar usuário' });
     }
 }
 
@@ -20,11 +20,11 @@ async function signin(req, res) {
     try {
         const token = await authService.signin(body);
 
-        return res.status(201).json(token);
+        return res.status(201).send(token);
     } catch (error) {
         console.error('Erro ao criar usuário no controller:', error);
         
-        return res.status(401).json(error.message);
+        return res.status(401).send(error.message);
     }
 }
 
