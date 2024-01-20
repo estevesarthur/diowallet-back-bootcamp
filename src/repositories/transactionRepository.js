@@ -3,22 +3,31 @@ import { createTransactionsSchema, insertTransactionQuery } from "../schemas/Tra
 import jwt from "jsonwebtoken";
 
 async function create(transactionData) {
+    const connection = await pool.getConnection();
+
     try {
+        await connection.beginTransaction();
+
         await createTransactionsSchema();
 
         // Insira uma transação vinculada a um usuário existente
-        await pool.query(insertTransactionQuery, [
+        await connection.query(insertTransactionQuery, [
             transactionData.value,
             transactionData.description,
             transactionData.type,
             transactionData.userId, // Insira o ID do usuário existente aqui
         ]);
 
+        await connection.commit();
         console.log('Transação inserida com sucesso!');
     } catch (error) {
+        await connection.rollback();
         console.error('Erro ao inserir transação:', error);
+    } finally {
+        connection.release();
     }
-};
+}
+
 
 // Função para decodificar o token JWT
 function decodeToken(token) {

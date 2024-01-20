@@ -2,27 +2,30 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 import authRepository from "../repositories/authRepository.js";
 
-export async function authMiddleware(req, res, next){
-    const { authorization } = req.headers;
-    if(!authorization) return res.status(401).send({message: "Token Inválido."});
-    const parts = authorization?.split(" ")
-    if(parts.length !== 2) return res.status(401).send({message: "Token Inválido."});
+export async function authMiddleware(req, res, next) {
+  const { authorization } = req.headers;
+  //console.log("authorization: ", authorization);
 
-    const [schema, token] = parts;
+  if (!authorization) return res.status(401).send({ message: "Token Inválido 1" });
 
-    if(!/^Bearer$/i.test(schema))
-        return res.status(401).send({message: "Token Inválido."});
+  const parts = authorization?.split(" ");
+  if (parts.length !== 2)
+    return res.status(401).send({ message: "Token Inválido 2" });
 
-        jwt.verify(token, process.env.SECRET, async(err, decode) => {
-            if(err) return res.status(401).send({message: "Token Inválido."});
-            if(!decode) return res.status(401).send({message: "Token Inválido."});
+  const [schema, token] = parts;
 
-            const user = await authRepository.findById(decode.id);
-            if(!user) return res.status(401).send({message: "Token Inválido."});
+  if (!/^Bearer$/i.test(schema))
+    return res.status(401).send({ message: "Token Inválido 3" });
 
-            res.locals.user = user;
+  jwt.verify(token, process.env.SECRET, async (err, decode) => {
+    if (err) return res.status(401).send({ message: "Token Inválido 4" });
+    if (!decode) return res.status(401).send({ message: "Token Inválido 5" });
 
-            next();
-        });
+    const user = await authRepository.findById(decode.id);
+    if (!user) return res.status(401).send({ message: "Token Inválido 6" });
 
+    res.locals.user = user;
+
+    next();
+  });
 }

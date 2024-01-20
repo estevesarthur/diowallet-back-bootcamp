@@ -47,7 +47,7 @@ const pool = mysql2.createPool({
 pool
     .getConnection()
     .then((connection) => {
-        console.log('Conexão estabelecida!');
+        //console.log('Conexão estabelecida!');
 
         // Execute consultas ou outras operações aqui...
 

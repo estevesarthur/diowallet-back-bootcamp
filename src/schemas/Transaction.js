@@ -4,7 +4,7 @@ import pool from "../config/database.js";
 const createTransactionsSchemaQuery = `
     CREATE TABLE IF NOT EXISTS transactions (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        value DECIMAL(10,2) NOT NULL,
+        value INT NOT NULL,
         description VARCHAR(255) NOT NULL,
         type VARCHAR(255) NOT NULL,
         userId INT,
@@ -15,7 +15,7 @@ const createTransactionsSchemaQuery = `
 
 // Consulta para inserir uma transação
 const insertTransactionQuery = `
-    INSERT INTO transactions (value, description, type, userId) VALUES (?, ?, ?, ?)
+    INSERT INTO transactions (value, description, type) VALUES (?, ?, ?)
 `;
 
 // Função para criar o esquema da tabela de transactions
