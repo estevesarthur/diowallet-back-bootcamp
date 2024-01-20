@@ -15,7 +15,7 @@ const createTransactionsSchemaQuery = `
 
 // Consulta para inserir uma transação
 const insertTransactionQuery = `
-    INSERT INTO transactions (value, description, type) VALUES (?, ?, ?)
+    INSERT INTO transactions (value, description, type, userId) VALUES (?, ?, ?, ?)
 `;
 
 // Função para criar o esquema da tabela de transactions
