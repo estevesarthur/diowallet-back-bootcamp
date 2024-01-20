@@ -19,7 +19,7 @@ async function signin(req, res) {
 
     try {
         const token = await authService.signin(body);
-        return res.status(201).send(token);
+        return res.send(token);
     } catch (error) {        
         return res.status(401).send(error.message);
     }

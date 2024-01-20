@@ -2,7 +2,7 @@ import transactionService from "../services/transactionService.js";
 
 async function create(req, res) {
     const body = req.body;
-    const id = res.locals.user.id;
+    const id = res.locals.user;
     //console.log("id: ",  id);
 
     try {
@@ -17,7 +17,7 @@ async function create(req, res) {
 }
 
 async function findAllByUser(req, res) {
-    const id = res.local.user.id;
+    const id = res.local.user;
 
     try {
         const transactions = await transactionService.findAllByUser(id);
