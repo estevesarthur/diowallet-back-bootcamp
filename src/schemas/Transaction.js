@@ -18,6 +18,10 @@ const insertTransactionQuery = `
     INSERT INTO transactions (value, description, type, userId) VALUES (?, ?, ?, ?)
 `;
 
+const getTransactionsByUserIdQuery = `
+    SELECT * FROM transactions WHERE userId = ?
+`;
+
 // Função para criar o esquema da tabela de transactions
 const createTransactionsSchema = async () => {
     const connection = await pool.getConnection();
@@ -36,4 +40,4 @@ const createTransactionsSchema = async () => {
     }
 };
 
-export { createTransactionsSchema, insertTransactionQuery };
+export { createTransactionsSchema, insertTransactionQuery, getTransactionsByUserIdQuery };

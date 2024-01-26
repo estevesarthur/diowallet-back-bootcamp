@@ -1,5 +1,5 @@
 import pool from "../config/database.js";
-import { createTransactionsSchema, insertTransactionQuery } from "../schemas/Transaction.js";
+import { createTransactionsSchema, insertTransactionQuery, getTransactionsByUserIdQuery } from "../schemas/Transaction.js";
 import jwt from "jsonwebtoken";
 
 async function create(transactionData) {
@@ -28,25 +28,26 @@ async function create(transactionData) {
     }
 }
 
-
-// Função para decodificar o token JWT
-function decodeToken(token) {
+async function findAllByUser(user) {
+    const connection = await pool.getConnection();
     try {
-        const decoded = jwt.verify(token, process.env.SECRET);
-        return decoded;
+        // Use apenas o ID do usuário
+        const userId = user.id;
+
+        console.log('Consultando transações para o userId:', userId);
+
+        // Execute a consulta SQL para recuperar as transações do usuário
+        const [transactions] = await connection.execute(getTransactionsByUserIdQuery, [userId]);
+
+        console.log('Transações encontradas:', transactions);
+
+        return transactions;
     } catch (error) {
-        throw new Error('Falha ao decodificar o token.');
+        console.error('Erro ao encontrar transações por usuário:', error.message);
+        throw error;
+    } finally {
+        connection.release();
     }
-}
-
-// Função para encontrar todas as transações de um usuário
-async function findAllByUser(token) {
-    // Decodifica o token para obter o ID do usuário
-    const decodedToken = decodeToken(token);
-    const userId = decodedToken.id;
-
-    // Obtém todas as transações associadas ao usuário
-    return transactionRepository.findAllByUserId(userId);
 }
 
 

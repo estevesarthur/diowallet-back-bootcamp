@@ -1,3 +1,4 @@
+import pool from "../config/database.js";
 import transactionService from "../services/transactionService.js";
 
 async function create(req, res) {
@@ -17,7 +18,7 @@ async function create(req, res) {
 }
 
 async function findAllByUser(req, res) {
-    const id = res.local.user;
+    const id = res.locals.user;
 
     try {
         const transactions = await transactionService.findAllByUser(id);

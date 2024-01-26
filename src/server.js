@@ -1,10 +1,18 @@
-import express, { json } from "express";
+import express, { json, response } from "express";
 import authRouter from "./routers/authRoutes.js";
 import pool from "./config/database.js";
 import transactionRouter from "./routers/transactionRoutes.js";
 import cors from "cors";
 
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:5173', // Substitua pelo seu front-end ou '*' para permitir de qualquer origem
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+  allowedHeaders: 'Content-Type,Authorization',
+}));
 
 const obterConexao = async () => {
   try {
@@ -24,8 +32,9 @@ const obterConexao = async () => {
 // Chame a função para obter a conexão
 obterConexao();
 
-app.use(json());
-app.use(cors());
+
+app.use(express.json());
+
 app.use(authRouter);
 app.use(transactionRouter);
 

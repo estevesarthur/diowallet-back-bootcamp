@@ -1,10 +1,11 @@
 import authService from "../services/authService.js";
+import pool from "../config/database.js";
 
 async function signup(req, res) {
     const body = req.body;
 
     try {
-        const resService = await authService.signup(body);
+        const resService = await authService.signup(body, pool);
 
         return res.status(201).send(resService);
     } catch (error) {
@@ -18,7 +19,7 @@ async function signin(req, res) {
     const body = req.body;
 
     try {
-        const token = await authService.signin(body);
+        const token = await authService.signin(body, pool);
         return res.send(token);
     } catch (error) {        
         return res.status(401).send(error.message);
@@ -26,10 +27,10 @@ async function signin(req, res) {
 }
 
 async function userLogged(req, res) {
-    const id = res.locals.user;
+    const id = res.locals.user.id;
 
     try {
-        const user = await authService.userLogged(id);
+        const user = await authService.userLogged(id, pool);
         return res.send(user);
 
     } catch (error) {

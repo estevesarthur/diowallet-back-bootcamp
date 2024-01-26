@@ -16,10 +16,10 @@ async function signin(body) {
     if(!userExists) throw new Error("E-mail e/ou senha incorretos.");
 
     //com falhas
-    const passwordOK = body.password === userExists.password;
+    const passwordOK = bcrypt.compare(body.password, userExists.password);
     
     //sem falhas
-    //const passwordOK = bcrypt.compareSync(body.password, userExists.password);
+    //const passwordOK = bcrypt.compareSync(body.password, userExists.passwordOKK);
     if(!passwordOK) throw new Error("E-mail e/ou senha incorretos.");
 
     return authRepository.generateToken(userExists.id);
